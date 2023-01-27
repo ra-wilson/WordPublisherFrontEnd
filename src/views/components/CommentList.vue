@@ -53,7 +53,7 @@ export default {
         .then((comments) => {
             this.comments = comments;
             this.num_comments = comments.length;
-            this.laoding = false;
+            this.loading = false;
         });
   },
   deleteComment(comment_id){

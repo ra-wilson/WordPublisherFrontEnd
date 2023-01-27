@@ -1,109 +1,65 @@
 <template>
-  <Navigation />
-  <div class="container-fluid w-100">
-    <div class="row">
-      <div class="col-12 col-md-4 offset-md-4">
-        <div class="login ">
-          <h1 class="header-center">Add Article</h1>
 
-          <form @submit.prevent="handleSubmit">
-            <div class="form-group was-validated">
-              <label class="form-label" for="email">Email: </label>
-              <input
-                class="form-control"
-                type="email"
-                name="email"
-                v-model="email"
-                required
-              />
-              <div v-show="submitted && !email">Email is required</div>
-
-              <div class="invalid-feedback">Please enter your email address</div>
-            </div>
-
-            <br /><br />
-
-            <div class="form-group was-validated">
-              <label class="form-label" for="password">Password: </label>
-              <input
-                class="form-control"
-                type="password"
-                name="password"
-                v-model="password"
-                required
-              />
-              <div v-show="submitted && !password">Password is required</div>
-              <div class="invalid-feedback">
-                        Please enter your email address
-                    </div>
-            </div>
-            <br /><br />
-
-            <p>{{ email + " " + password }}</p>
-
-            <button class="btn btn-success w-100">Login</button>
-            <div v-if="error">{{ error }}</div>
-          </form>
-        </div>
-
+  <Navigation/>
+  <div class="container-fluid d-flex align-items-center justify-content-center">
+    <div class="card">
+      <div class="card-header">
+        <h3>Add Article</h3>
       </div>
-
+      <div class="card-body">
+        <form @submit.prevent="handleSubmit">
+          <div class="form-group">
+            <label for="articleTitle">Title:</label>
+            <input type="text" class="form-control" id="articleTitle" v-model="title" required>
+          </div>
+          <div class="form-group">
+            <label for="articleText">Article Text:</label>
+            <textarea class="form-control" id="articleText" rows="5" v-model="article_text" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="author">Author:</label>
+            <input type="text" class="form-control" id="author" v-model="author" required>
+          </div>
+          
+          <br />
+          <br />
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
     </div>
   </div>
-  
 </template>
 
 <script>
-import { userService } from '../../services/users.service';
+import { articleService } from "../../services/articles.service";
 import Navigation from "../components/Navigation.vue";
 
 export default {
 
-  components: {Navigation},
+  components: { Navigation },
 
   data() {
     return {
-      email: "",
-      password: "",
+      title: "",
+      article_text: "",
+      author: "",
     };
   },
-
-
-  mounted(){
-    userService.login(email, password)
-    .then(result => {
-      console.log("Auth - go to dash")
-      this.$router.push('/dashboard');
-    })
-    .catch(error => {
-      this.error = error;
-      this.laoding = false;
-    })
+  mounted() {
+    
   },
-
-
   methods: {
-    handleSubmit(e) {
-  
-      this.submitted = true;
-      const { email, password } = this;
-      if (!(email && password)) {
-        return;
-      }
-
-      if (!EmailValidator.validate(email)) {
-        this.error = "Email must be a valid email.";
-        return;
-      }
-
-      const password_pattern = /^(?=(.*[a-z]))(?=(.*[A-Z])(?=.*[a-zA-z]).{8,)$/;
-
-      if (!password_pattern.test(password)) {
-        this.error = "Password not strong enough.";
-        return;
-      }
+    handleSubmit() {
+      const { title, article_text, author} = this;
+      articleService.addArticle(title, article_text, author)
+        .then(result => {
+          this.$router.push("/articles");
+          console.log("Article added.");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };
-
 </script>

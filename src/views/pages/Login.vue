@@ -42,6 +42,7 @@
               </div>
               <br /><br />
 
+              <p>{{ email + " " + password }}</p>
 
               <button class="btn btn-success w-100">Login</button>
               <div v-if="error">{{ error }}</div>
@@ -86,13 +87,6 @@ export default {
 
       if (!EmailValidator.validate(email)) {
         this.error = "Email must be a valid email.";
-        return;
-      }
-
-      const password_pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-
-      if (!password_pattern.test(password)) {
-        this.error = "Password not strong enough.";
         return;
       }
 

@@ -37,20 +37,76 @@ const getArticle = (article_id) => {
 
 }
 
-const addArticle = () => {
+const addArticle = (title, article_text, author) => {
   return fetch("http://localhost:3333/articles", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "X-Authorization": localStorage.getItem("session_token"),
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      article_title: article_title,
+      title: title,
       article_text: article_text,
       author: author
     }),
   })
     .then((response) => {
       if (response.status === 200) {
+        return response.json();
+      } else if (response.status === 400) {
+        throw "Bad Request";
+      } else if (response.status === 401) {
+        throw "Unauthorized";
+      } else {
+        throw "Something went wrong";
+      }
+    })
+    .catch((error) => {
+      console.log("err", error);
+      return Promise.reject(error);
+    });
+}
+
+
+const editArticle = (article_id, title, article_text, author) => {
+  return fetch("http://localhost:3333/articles" + article_id, {
+    method: "PATCH",
+    headers: {
+      "X-Authorization": localStorage.getItem("session_token"),
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      title: title,
+      article_text: article_text,
+      author: author
+    }),
+  })
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      } else if (response.status === 400) {
+        throw "Bad Request";
+      } else if (response.status === 401) {
+        throw "Unauthorized";
+      } else {
+        throw "Something went wrong";
+      }
+    })
+    .catch((error) => {
+      console.log("err", error);
+      return Promise.reject(error);
+    });
+}
+const deleteArticle = (article_id) => {
+  return fetch("http://localhost:3333/articles" + article_id, {
+    method: "DELETE",
+    headers: {
+      "X-Authorization": localStorage.getItem("session_token"),
+      "Content-Type": "application/json"
+    },
+  })
+    .then((response) => {
+      if (response.status === 201) {
         return response.json();
       } else if (response.status === 400) {
         throw "Bad Request";
@@ -64,8 +120,11 @@ const addArticle = () => {
     });
 }
 
+
 export const articleService = {
     getAll,
     getArticle,
-    addArticle
+    addArticle,
+    editArticle,
+    deleteArticle
 }
