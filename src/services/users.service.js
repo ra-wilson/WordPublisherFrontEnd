@@ -1,5 +1,11 @@
 const getAll = () => {
-  return fetch("http://localhost:3333/users")
+  return fetch("http://localhost:3333/users", {
+    method: "GET",
+    headers: {
+      "X-Authorization": localStorage.getItem("session_token"),
+      "Content-Type": "application/json",
+    },
+  })
     .then((response) => {
       if (response.status === 200) {
         return response.json();
@@ -21,7 +27,7 @@ const login = (email, password) => {
   return fetch("http://localhost:3333/login", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       email: email,
@@ -31,9 +37,8 @@ const login = (email, password) => {
     .then((response) => {
       if (response.status === 200) {
         return response.json();
-      
       } else if (response.status === 400) {
-        throw "Bad Request";
+        throw "Invalid login details";
       } else {
         throw "Something went wrong";
       }
@@ -41,7 +46,7 @@ const login = (email, password) => {
     .then((resJson) => {
       localStorage.setItem("user_id", resJson.user_id);
       localStorage.setItem("session_token", resJson.session_token);
-   
+
       return resJson;
     })
     .catch((error) => {
@@ -80,13 +85,13 @@ const addUser = (first_name, last_name, email, password) => {
     method: "POST",
     headers: {
       "X-Authorization": localStorage.getItem("session_token"),
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
-        password: password
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      password: password,
     }),
   })
     .then((response) => {
@@ -102,11 +107,11 @@ const addUser = (first_name, last_name, email, password) => {
       console.log("err", error);
       return Promise.reject(error);
     });
-}
+};
 
 export const userService = {
   getAll,
   login,
   logout,
-  addUser
+  addUser,
 };

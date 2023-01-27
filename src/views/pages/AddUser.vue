@@ -6,14 +6,14 @@
         <h3>Add User</h3>
       </div>
       <div class="card-body">
-        <form @submit.prevent="handleSubmit">
+        <form @submit.prevent="handleNewUser">
           <div class="form-group">
             <label for="first-name">First Name</label>
             <input
               type="text"
               class="form-control"
               id="first-name"
-              v-model="title"
+              v-model="first_name"
               required
             />
           </div>
@@ -23,7 +23,7 @@
               type="text"
               class="form-control"
               id="last-name"
-              v-model="title"
+              v-model="last_name"
               required
             />
           </div>
@@ -33,7 +33,7 @@
               type="text"
               class="form-control"
               id="email"
-              v-model="author"
+              v-model="email"
               required
             />
           </div>
@@ -43,16 +43,16 @@
               type="password"
               class="form-control"
               id="password"
-              v-model="author"
+              v-model="password"
               required
             />
           </div>
 
           <br />
           <br />
-          <button type="submit" class="btn btn-primary">Submit</button>
-          <div class="alert alert-danger" v-if="showError">
-            {{ errorMessage }}
+          <button type="submit" class="btn btn-primary">Add user</button>
+          <div class="alert alert-danger" v-if="error" id="poor-password">
+            {{ this.error }}
           </div>
         </form>
       </div>
@@ -73,11 +73,13 @@ export default {
       last_name: "",
       email: "",
       password: "",
+      error: ""
     };
   },
   mounted() {},
   methods: {
-    handleSubmit() {
+    handleNewUser() {
+      this.error = "";
       const { first_name, last_name, email, password } = this;
 
 
@@ -96,15 +98,11 @@ export default {
 
       userService
         .addUser(first_name, last_name, email, password)
-        .then((result) => {
+        .then(result => {
           this.$router.push("/dashboard");
           console.log("User added.");
         })
         .catch((error) => {
-          if (error.status === 401) {
-            this.showError = true;
-            this.errorMessage = "You are not authorized to do this";
-          }
           console.log(error);
         });
     },

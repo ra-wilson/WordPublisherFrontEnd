@@ -8,6 +8,7 @@ import NotFound from "../views/pages/NotFound.vue"
 import addArticle from "../views/pages/AddArticle.vue"
 import Users from "../views/pages/Users.vue"
 import AddUser from "../views/pages/AddUser.vue"
+import editArticle from "../views/pages/EditArticle.vue"
 
 
 
@@ -16,7 +17,7 @@ const ifAuthenticated = (to, from, next) => {
 
     if(loggedIn) {
         next()
-        return
+        return;
     }
     next('/login')
 }
@@ -28,6 +29,7 @@ const routes = [
     { path: '/dashboard', component: Dashboard, beforeEnter: ifAuthenticated },
     { path: '/article/:id', component: Article },
     { path: '/articles/add', component: addArticle, beforeEnter: ifAuthenticated},
+    { path: '/articles/edit', component: editArticle, beforeEnter: ifAuthenticated},
     { path: '/users', component: Users, beforeEnter: ifAuthenticated },
     { path: '/users/add', component: AddUser, beforeEnter: ifAuthenticated }
 ]

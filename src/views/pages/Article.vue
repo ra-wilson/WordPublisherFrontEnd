@@ -11,29 +11,42 @@
       </div>
 
       <div class="text-center">
-    <h2>Comments</h2>
-    <ul v-if="comments.length" class="list-group list-group-flush">
-      <li
-        v-for="comment in comments"
-        :key="comment.comment_id"
-        class="list-group-item"
-      >
-        <p>{{ comment.comment_text }}</p>
-      </li>
-    </ul>
-    <div class="form-group w-50 mx-auto" id="new-comment">
-      <textarea class="form-control" v-model="comment_text" rows="1"></textarea>
+        <h2>Comments</h2>
+        <ul v-if="comments.length" class="list-group list-group-flush">
+          <li
+            v-for="comment in comments"
+            :key="comment.comment_id"
+            class="list-group-item d-flex justify-content-between"
+          >
+            <p>{{ comment.comment_text }}</p>
+
+            <button
+              class="btn btn-danger"
+              @click="handleDelete(comment.comment_id)"
+            >
+              Delete
+            </button>
+          </li>
+        </ul>
+        <div class="form-group w-50 mx-auto" id="new-comment">
+          <textarea
+            class="form-control"
+            v-model="comment_text"
+            rows="1"
+          ></textarea>
+        </div>
+        <button class="btn btn-primary" @click="handleComment">
+          Post Comment
+        </button>
+      </div>
     </div>
-    <button class="btn btn-primary" @click="handleComment">Post Comment</button>
-  </div>
-  </div>
   </div>
 </template>
 
 <script>
 import { articleService } from "../../services/articles.service";
 import { commentsService } from "../../services/comments.service";
-import Comment from "../components/Comment.vue";
+
 import Navigation from "../components/Navigation.vue";
 
 export default {
@@ -52,7 +65,7 @@ export default {
   },
 
   created() {
-  this.loading = true;
+    this.loading = true;
 
     articleService
       .getArticle(this.$route.params.id)
@@ -95,6 +108,14 @@ export default {
           console.log(error);
         });
     },
-  },  
+  },
+  refreshComments() {
+    this.comments.loading = true;
+    commentService.getAll(this.$route.params.id).then((comments) => {
+      this.comments = comments;
+      this.num_comments = comments.length;
+      this.loading = false;
+    });
+  },
 };
 </script>

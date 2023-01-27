@@ -3,17 +3,19 @@
   <div class="container">
     <h1 class="header">Users</h1>
 
-    <em v-if="loading">Loading users...</em>
+    <div v-if="loading" class="text-center my-5">
+      <div class="spinner-border" role="status">
+        <span class="sr-only"></span>
+      </div>
+    </div>
     <ol class="list-group list-group-flush" v-if="users.length">
       <li class="list-group-item" v-for="user in users" :key="user.user_id">
-
-
         <div class="row">
           <div class="col-lg-6">
             <div class="card mb-5 shadow-sm">
               <div class="card-body">
                 <div class="card-title">
-                  <h2>{{ user.first_name + user.last_name }}</h2>
+                  <h2>{{ user.first_name }} {{ user.last_name }}</h2>
                 </div>
 
                 <div class="card-content">
@@ -51,5 +53,3 @@ export default {
   },
 };
 </script>
-
-

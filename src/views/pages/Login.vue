@@ -42,7 +42,6 @@
               </div>
               <br /><br />
 
-              <p>{{ email + " " + password }}</p>
 
               <button class="btn btn-success w-100">Login</button>
               <div v-if="error">{{ error }}</div>
@@ -58,8 +57,7 @@
 import { userService } from "../../services/users.service";
 import Navigation from "../components/Navigation.vue";
 
-import * as EmailValidator from 'email-validator';
-
+import * as EmailValidator from "email-validator";
 
 export default {
   components: { Navigation },
@@ -68,13 +66,11 @@ export default {
     return {
       email: "",
       password: "",
-      error: ""
+      error: "",
     };
   },
 
-  mounted() {
-    
-  },
+  mounted() {},
 
   methods: {
     handleSubmit(e) {
@@ -91,15 +87,15 @@ export default {
       }
 
       userService
-      .login(email, password)
-      .then(result => {
-        console.log("Auth - go to dash");
-        this.$router.push("/dashboard");
-      })
-      .catch((error) => {
-        this.error = error;
-        this.loading = false;
-      });
+        .login(email, password)
+        .then((result) => {
+          console.log("Auth - go to dash");
+          this.$router.push("/dashboard");
+        })
+        .catch((error) => {
+          this.error = error;
+          this.loading = false;
+        });
     },
   },
 };

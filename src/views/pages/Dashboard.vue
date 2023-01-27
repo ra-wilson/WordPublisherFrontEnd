@@ -1,6 +1,6 @@
 <template>
-<Navigation />
-  
+  <Navigation />
+
   <div class="container-fluid">
     <div class="row">
       <div class="col-12 col-md-4 offset-md-4">
@@ -13,24 +13,31 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-6">
-                    <button class="btn btn-primary"><router-link to="/articles">View Articles</router-link></button>
+                    <button class="btn btn-primary">
+                      <router-link to="/articles">View Articles</router-link>
+                    </button>
                   </div>
                   <div class="col-6">
-                    <button class="btn btn-primary"><router-link to="/articles/add">Add Article</router-link></button>
+                    <button class="btn btn-primary">
+                      <router-link to="/articles/add">Add Article</router-link>
+                    </button>
                   </div>
                 </div>
-                <br>
+                <br />
                 <div class="row">
                   <div class="col-6">
-                    <button class="btn btn-primary"><router-link to="/users">View Users</router-link></button>
+                    <button class="btn btn-primary">
+                      <router-link to="/users">View Users</router-link>
+                    </button>
                   </div>
                   <div class="col-6">
-                    <button class="btn btn-primary"><router-link to="/users/add">Add User</router-link></button>
+                    <button class="btn btn-primary">
+                      <router-link to="/users/add">Add User</router-link>
+                    </button>
                   </div>
                   <div class="col-12" v-on:click="handleSubmit">
                     <button class="btn btn-primary" id="logout">Log out</button>
                   </div>
-                  
                 </div>
               </div>
             </div>
@@ -41,40 +48,32 @@
   </div>
 </template>
 
-  <script>
+<script>
 import Navigation from "../components/Navigation.vue";
 import { userService } from "../../services/users.service";
-  
-  export default {
-    components: { Navigation },
 
-  
-mounted() {
-  console.log(localStorage.getItem("session_token"));
-},
+export default {
+  components: { Navigation },
 
-methods: {
-  handleSubmit(e) {
-    userService
-    .logout()
-    .then(result => {
-      console.log("See you soon!");
-      this.$router.push("/articles");
-    })
-    .catch((error) => {
-      this.error = error;
-      this.loading = false;
-    });
+  mounted() {
+    console.log(localStorage.getItem("session_token"));
   },
-},
+
+  methods: {
+    handleSubmit(e) {
+      userService
+        .logout()
+        .then((result) => {
+          console.log("See you soon!");
+          this.$router.push("/articles");
+        })
+        .catch((error) => {
+          this.error = error;
+          this.loading = false;
+        });
+    },
+  },
 };
+</script>
 
-
-
-  </script>
-
-<style
-  scoped
-  src="/Users/reecewilson/MMU/FSWD/Assignment/fsd_blog_frontend/fsd_blog_front_end/src/styles/dashboard.css"
-></style>
 

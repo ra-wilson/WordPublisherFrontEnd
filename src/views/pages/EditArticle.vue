@@ -71,10 +71,10 @@ export default {
       this.error = "";
       const { title, article_text, author } = this;
       articleService
-        .addArticle(title, article_text, author)
+        .editArticle(title, article_text, author)
         .then((result) => {
-          this.$router.push("/dashboard");
-          console.log("Article added.");
+          this.$router.push("/articles");
+          console.log("Article edited.");
         })
         .catch((error) => {
           console.log(error);

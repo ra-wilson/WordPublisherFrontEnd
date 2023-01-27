@@ -69,7 +69,7 @@ const addArticle = (title, article_text, author) => {
 
 
 const editArticle = (article_id, title, article_text, author) => {
-  return fetch("http://localhost:3333/articles" + article_id, {
+  return fetch("http://localhost:3333/articles/" + article_id, {
     method: "PATCH",
     headers: {
       "X-Authorization": localStorage.getItem("session_token"),
@@ -98,7 +98,7 @@ const editArticle = (article_id, title, article_text, author) => {
     });
 }
 const deleteArticle = (article_id) => {
-  return fetch("http://localhost:3333/articles" + article_id, {
+  return fetch("http://localhost:3333/articles/" + article_id, {
     method: "DELETE",
     headers: {
       "X-Authorization": localStorage.getItem("session_token"),
